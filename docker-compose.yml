@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  java-dev:
+    build: .
+    container_name: java21-training
+    volumes:
+      - ./src:/workspace/src
+      - ./taskapp:/workspace/taskapp        # ★追加：プロジェクトを共有
+      - maven-repo:/root/.m2                # ★追加：ライブラリのキャッシュ
+    ports:
+      - "8080:8080"                          # ★追加：ポートを公開
+    stdin_open: true
+    tty: true
+    environment:
+      - TZ=Asia/Tokyo
+
+volumes:
+  maven-repo:
