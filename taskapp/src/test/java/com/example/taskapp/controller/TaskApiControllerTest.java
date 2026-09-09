@@ -3,6 +3,7 @@ package com.example.taskapp.controller;
 import com.example.taskapp.entity.TaskEntity;
 import com.example.taskapp.exception.TaskNotFoundException;
 import com.example.taskapp.service.TaskService;
+import com.example.taskapp.model.TaskCategory;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class TaskApiControllerTest {
         @Test
         @DisplayName("GET /api/v1/tasks で一覧がJSONで返る")
         void list() throws Exception {
-                TaskEntity task = new TaskEntity("設計書をレビューする", LocalDate.of(2026, 12, 31));
+                TaskEntity task = new TaskEntity("設計書をレビューする", LocalDate.of(2026, 12, 31), TaskCategory.WORK);
                 when(service.findAll()).thenReturn(List.of(task));
 
                 mockMvc.perform(get("/api/v1/tasks"))
@@ -59,13 +60,13 @@ class TaskApiControllerTest {
         @Test
         @DisplayName("正しいJSONでPOSTすると201が返る")
         void create() throws Exception {
-                TaskEntity saved = new TaskEntity("新しいタスク", LocalDate.of(2026, 12, 31));
-                when(service.create(any(), any())).thenReturn(saved);
+                TaskEntity saved = new TaskEntity("新しいタスク", LocalDate.of(2026, 12, 31), TaskCategory.WORK);
+                when(service.create(any(), any(), any())).thenReturn(saved);
 
                 mockMvc.perform(post("/api/v1/tasks")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
-                                                {"title":"新しいタスク","dueDate":"2026-12-31"}
+                                                {"title":"新しいタスク","dueDate":"2026-12-31","category":"WORK"}
                                                 """)) // Java① のテキストブロック
                                 .andExpect(status().isCreated()) // 201
                                 .andExpect(jsonPath("$.title").value("新しいタスク"));
