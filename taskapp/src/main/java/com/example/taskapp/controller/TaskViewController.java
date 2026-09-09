@@ -48,7 +48,7 @@ public class TaskViewController {
             return "task/list";
         }
 
-        service.create(taskForm.getTitle(), taskForm.getDueDate());
+        service.create(taskForm.getTitle(), taskForm.getDueDate(), taskForm.getCategory());
         redirectAttributes.addFlashAttribute("message", "タスクを登録しました");
         return "redirect:/tasks";
     }

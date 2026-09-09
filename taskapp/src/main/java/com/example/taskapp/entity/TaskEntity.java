@@ -1,11 +1,15 @@
 package com.example.taskapp.entity;
 
+import com.example.taskapp.model.TaskCategory;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 
 import java.time.LocalDate;
 
@@ -26,14 +30,19 @@ public class TaskEntity {
     @Column(name = "due_date") // 列名を指定
     private LocalDate dueDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'OTHER'")
+    private TaskCategory category;
+
     /** JPAが内部で使うため、引数なしコンストラクタが必須 */
     protected TaskEntity() {
     }
 
-    public TaskEntity(String title, LocalDate dueDate) {
+    public TaskEntity(String title, LocalDate dueDate, TaskCategory category) {
         this.title = title;
         this.done = false;
         this.dueDate = dueDate;
+        this.category = category;
     }
 
     // ===== getter / setter =====
@@ -63,5 +72,13 @@ public class TaskEntity {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public TaskCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(TaskCategory category) {
+        this.category = category;
     }
 }

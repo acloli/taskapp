@@ -4,6 +4,7 @@ import com.example.taskapp.entity.TaskEntity;
 import com.example.taskapp.exception.BusinessRuleViolationException;
 import com.example.taskapp.exception.TaskNotFoundException;
 import com.example.taskapp.repository.TaskJpaRepository;
+import com.example.taskapp.model.TaskCategory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,15 +41,18 @@ public class TaskService {
     private static final Logger log = LoggerFactory.getLogger(TaskService.class);
 
     @Transactional // ★更新系は書き込み可能にする
-    public TaskEntity create(String title, LocalDate dueDate) {
+    public TaskEntity create(String title, LocalDate dueDate, TaskCategory category) {
         if (title == null || title.isBlank()) {
             throw new BusinessRuleViolationException("タイトルは必須です");
         }
         if (dueDate != null && dueDate.isBefore(LocalDate.now())) {
             throw new BusinessRuleViolationException("期限に過去の日付は指定できません");
         }
-        log.info("タスクを登録します: title={}, dueDate={}", title, dueDate);
-        TaskEntity saved = repository.save(new TaskEntity(title.trim(), dueDate));
+        if (category == null) {
+            throw new BusinessRuleViolationException("カテゴリは必須です");
+        }
+        log.info("タスクを登録します: title={}, dueDate={}, category={}", title, dueDate, category);
+        TaskEntity saved = repository.save(new TaskEntity(title.trim(), dueDate, category));
         log.info("タスクを登録しました: id={}", saved.getId());
         return saved;
     }
@@ -71,5 +75,9 @@ public class TaskService {
             throw new TaskNotFoundException(id);
         }
         repository.deleteById(id);
+    }
+
+    public List<TaskEntity> findByCategory(TaskCategory category) {
+        return repository.findByCategory(category);
     }
 }

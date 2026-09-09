@@ -28,6 +28,7 @@
             <th>状態</th>
             <th>タイトル</th>
             <th>期限</th>
+            <th>カテゴリ</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -36,6 +37,7 @@
             <td th:text="${task.done} ? '完了' : '未完了'">未完了</td>
             <td th:text="${task.title}">サンプルタスク</td>
             <td th:text="${task.dueDate != null} ? ${#temporals.format(task.dueDate, 'yyyy/MM/dd')} : '-'">2026/08/01</td>
+            <td th:text="${task.category.displayName}">カテゴリ</td>
             <td>
                 <form th:action="@{/tasks/{id}/toggle(id=${task.id})}" method="post" class="inline">
                     <button type="submit" th:text="${task.done} ? '未完了に戻す' : '完了にする'">完了にする</button>
@@ -62,6 +64,17 @@
             <label for="dueDate">期限</label>
             <input type="date" id="dueDate" th:field="*{dueDate}">
             <span class="error" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></span>
+        </div>
+
+        <div class="field">
+            <label for="category">カテゴリ</label>
+            <select id="category" th:field="*{category}">
+                <option value="">選択してください</option>
+                <option value="WORK" th:selected="${taskForm.category == T(com.example.taskapp.model.TaskCategory).WORK}">仕事</option>
+                <option value="PRIVATE" th:selected="${taskForm.category == T(com.example.taskapp.model.TaskCategory).PRIVATE}">私用</option>
+                <option value="OTHER" th:selected="${taskForm.category == T(com.example.taskapp.model.TaskCategory).OTHER}">その他</option>
+            </select>
+            <span class="error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
         </div>
 
         <button type="submit">登録する</button>

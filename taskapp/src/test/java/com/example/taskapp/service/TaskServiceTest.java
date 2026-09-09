@@ -4,6 +4,7 @@ import com.example.taskapp.entity.TaskEntity;
 import com.example.taskapp.exception.BusinessRuleViolationException;
 import com.example.taskapp.exception.TaskNotFoundException;
 import com.example.taskapp.repository.TaskJpaRepository;
+import com.example.taskapp.model.TaskCategory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,13 +36,13 @@ class TaskServiceTest {
 
     @BeforeEach // ★各テストの前に毎回実行される
     void setUp() {
-        sampleTask = new TaskEntity("設計書をレビューする", LocalDate.of(2026, 12, 31));
+        sampleTask = new TaskEntity("設計書をレビューする", LocalDate.of(2026, 12, 31), TaskCategory.WORK);
     }
 
     @Test
     @DisplayName("タイトルが空の場合は業務例外が発生する")
     void createWithBlankTitle() {
-        assertThatThrownBy(() -> service.create("   ", LocalDate.of(2026, 12, 31)))
+        assertThatThrownBy(() -> service.create("   ", LocalDate.of(2026, 12, 31), TaskCategory.WORK))
                 .isInstanceOf(BusinessRuleViolationException.class)
                 .hasMessage("タイトルは必須です");
 
@@ -52,7 +53,7 @@ class TaskServiceTest {
     @Test
     @DisplayName("期限が過去の日付の場合は業務例外が発生する")
     void createWithPastDueDate() {
-        assertThatThrownBy(() -> service.create("タスク", LocalDate.now().minusDays(1)))
+        assertThatThrownBy(() -> service.create("タスク", LocalDate.now().minusDays(1), TaskCategory.WORK))
                 .isInstanceOf(BusinessRuleViolationException.class)
                 .hasMessage("期限に過去の日付は指定できません");
     }
@@ -64,7 +65,7 @@ class TaskServiceTest {
         when(repository.save(any(TaskEntity.class))).thenReturn(sampleTask);
 
         // Act
-        TaskEntity result = service.create("設計書をレビューする", LocalDate.of(2026, 12, 31));
+        TaskEntity result = service.create("設計書をレビューする", LocalDate.of(2026, 12, 31), TaskCategory.WORK);
 
         // Assert
         assertThat(result.getTitle()).isEqualTo("設計書をレビューする");
