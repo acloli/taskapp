@@ -1,7 +1,10 @@
 package com.example.taskapp.model;
 
+import com.example.taskapp.model.TaskCategory;
+
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -13,6 +16,9 @@ public class TaskForm {
 
     @FutureOrPresent(message = "期限に過去の日付は指定できません")
     private LocalDate dueDate;
+
+    @NotNull(message = "カテゴリは必須です")
+    private TaskCategory category;
 
     public String getTitle() {
         return title;
@@ -28,5 +34,13 @@ public class TaskForm {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public TaskCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(TaskCategory category) {
+        this.category = category;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.taskapp.repository;
 
 import com.example.taskapp.entity.TaskEntity;
+import com.example.taskapp.model.TaskCategory;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
@@ -17,4 +19,6 @@ public interface TaskJpaRepository extends JpaRepository<TaskEntity, Long> {
     List<TaskEntity> findByDueDateBeforeAndDoneFalse(LocalDate date);
 
     List<TaskEntity> findAllByOrderByDueDateAsc();
+
+    List<TaskEntity> findByCategory(TaskCategory category);
 }

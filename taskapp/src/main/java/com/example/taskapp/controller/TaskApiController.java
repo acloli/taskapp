@@ -57,7 +57,7 @@ public class TaskApiController {
     @PostMapping
     public ResponseEntity<TaskResponse> create(@Valid @RequestBody TaskRequest request) {
         TaskResponse created = TaskResponse.from(
-                service.create(request.title(), request.dueDate()));
+                service.create(request.title(), request.dueDate(), request.category()));
 
         // 201 Created + Location ヘッダー（作成されたリソースの場所）
         return ResponseEntity
