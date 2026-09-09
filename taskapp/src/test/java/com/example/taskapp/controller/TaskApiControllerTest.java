@@ -78,7 +78,7 @@ class TaskApiControllerTest {
                 mockMvc.perform(post("/api/v1/tasks")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
-                                                {"title":"","dueDate":"2026-12-31"}
+                                                {"title":"","dueDate":"2026-12-31","category":"WORK"}
                                                 """))
                                 .andExpect(status().isBadRequest()) // 400
                                 .andExpect(jsonPath("$.message").value("入力内容に誤りがあります"))
