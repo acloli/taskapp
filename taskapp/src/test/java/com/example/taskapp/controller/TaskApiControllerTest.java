@@ -86,6 +86,19 @@ class TaskApiControllerTest {
         }
 
         @Test
+        @DisplayName("カテゴリが未指定のJSONでPOSTすると400とエラー詳細が返る")
+        void createCategoryValidationError() throws Exception {
+                mockMvc.perform(post("/api/v1/tasks")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                                {"title":"新しいタスク","dueDate":"2026-12-31"}
+                                                """))
+                                .andExpect(status().isBadRequest()) // 400
+                                .andExpect(jsonPath("$.message").value("入力内容に誤りがあります"))
+                                .andExpect(jsonPath("$.details[0]").value("category: カテゴリは必須です"));
+        }
+
+        @Test
         @DisplayName("DELETE で 204 が返る")
         void delete204() throws Exception {
                 mockMvc.perform(delete("/api/v1/tasks/1"))
