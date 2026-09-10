@@ -38,6 +38,7 @@ public class TaskViewController {
         }
         model.addAttribute("filter", filter);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("stats", service.getStatistics());
         if (!model.containsAttribute("taskForm")) {
             model.addAttribute("taskForm", new TaskForm());
         }
@@ -53,6 +54,7 @@ public class TaskViewController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("tasks", service.findAll());
+            model.addAttribute("stats", service.getStatistics());
             return "task/list";
         }
 
