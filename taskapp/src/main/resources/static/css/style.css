@@ -35,6 +35,15 @@ th { background: #fafafa; }
 
 tr.done td { color: #999; text-decoration: line-through; }
 
+tr.overdue {
+    background-color: #fff5f5;
+}
+tr.overdue td {
+    color: #c53030;
+    font-weight: 500;
+}
+
+
 .field { margin-bottom: 12px; }
 label { display: block; font-size: 13px; margin-bottom: 4px; }
 input[type=text], input[type=date] {
