@@ -71,6 +71,9 @@
                       onsubmit="return confirm('削除してよろしいですか？');">
                     <button type="submit" class="danger">削除</button>
                 </form>
+                <a th:href="@{/tasks/{id}/edit(id=${task.id})}">
+                    <button type="submit">編集</button>
+                </a>
             </td>
         </tr>
         </tbody>

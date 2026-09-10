@@ -2,6 +2,7 @@ package com.example.taskapp.controller;
 
 import com.example.taskapp.model.TaskForm;
 import com.example.taskapp.service.TaskService;
+import com.example.taskapp.entity.TaskEntity;
 import com.example.taskapp.exception.TaskNotFoundException;
 
 import jakarta.validation.Valid;
@@ -82,6 +83,41 @@ public class TaskViewController {
     @ExceptionHandler(TaskNotFoundException.class)
     public String handleNotFound(TaskNotFoundException e, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        return "redirect:/tasks";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(@PathVariable Long id, Model model) {
+        TaskEntity task = service.getById(id);
+        model.addAttribute("taskForm",
+                new TaskForm(
+                        task.getTitle(),
+                        task.getDueDate(),
+                        task.getCategory(),
+                        task.isDone()));
+        return "task/edit";
+    }
+
+    @PostMapping("/{id}")
+    public String update(@PathVariable Long id,
+            @Valid @ModelAttribute TaskForm taskForm,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("id", id);
+            return "task/edit";
+        }
+        TaskEntity existing = service.getById(id);
+        service.update(
+                id,
+                taskForm.getTitle(),
+                taskForm.getDueDate(),
+                taskForm.getCategory(),
+                existing.isDone());
+
+        redirectAttributes.addFlashAttribute("message", "タスクを更新しました");
         return "redirect:/tasks";
     }
 }
