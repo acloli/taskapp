@@ -9,12 +9,15 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class TaskForm {
     @NotBlank(message = "タイトルは必須です")
     @Size(max = 100, message = "タイトルは100文字以内で入力してください")
     private String title;
 
     @FutureOrPresent(message = "期限に過去の日付は指定できません")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
 
     @NotNull(message = "カテゴリは必須です")
