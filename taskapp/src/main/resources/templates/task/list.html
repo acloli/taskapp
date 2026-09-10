@@ -58,7 +58,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="task : ${tasks}" th:classappend="${task.done} ? 'done' : ''">
+        <tr th:each="task : ${tasks}"
+            th:classappend="${task.dueDate != null and !task.done and task.dueDate.isBefore(T(java.time.LocalDate).now())} ? 'overdue' : ''">
             <td th:text="${task.done} ? '完了' : '未完了'">未完了</td>
             <td th:text="${task.title}">サンプルタスク</td>
             <td th:text="${task.dueDate != null} ? ${#temporals.format(task.dueDate, 'yyyy/MM/dd')} : '-'">2026/08/01</td>
