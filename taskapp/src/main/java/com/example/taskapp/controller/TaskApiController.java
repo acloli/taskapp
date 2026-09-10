@@ -34,8 +34,12 @@ public class TaskApiController {
             @ApiResponse(responseCode = "200", description = "取得に成功")
     })
     @GetMapping
-    public List<TaskResponse> list(@RequestParam(required = false) Boolean done) {
+    public List<TaskResponse> list(@RequestParam(required = false) Boolean done,
+            @RequestParam(required = false) String keyword) {
         var entities = (done == null) ? service.findAll() : service.findByDone(done);
+        if (keyword != null && !keyword.isBlank()) {
+            entities = service.findByTitleContainingOrderByDueDateAsc(keyword);
+        }
         return entities.stream()
                 .map(TaskResponse::from) // Java③ の Stream API
                 .toList();

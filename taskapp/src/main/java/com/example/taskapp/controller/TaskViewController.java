@@ -23,12 +23,19 @@ public class TaskViewController {
 
     /** 一覧＋登録フォーム */
     @GetMapping
-    public String list(@RequestParam(required = false) String filter, Model model) {
-        model.addAttribute("tasks", switch (filter == null ? "all" : filter) {
-            case "done" -> service.findByDone(true);
-            case "todo" -> service.findByDone(false);
-            default -> service.findAll();
-        });
+    public String list(@RequestParam(required = false) String filter,
+            @RequestParam(required = false) String keyword,
+            Model model) {
+
+        if (keyword != null && !keyword.isBlank()) {
+            model.addAttribute("tasks", service.findByTitleContainingOrderByDueDateAsc(keyword));
+        } else {
+            model.addAttribute("tasks", switch (filter == null ? "all" : filter) {
+                case "done" -> service.findByDone(true);
+                case "todo" -> service.findByDone(false);
+                default -> service.findAll();
+            });
+        }
         model.addAttribute("filter", filter);
         if (!model.containsAttribute("taskForm")) {
             model.addAttribute("taskForm", new TaskForm());

@@ -80,4 +80,8 @@ public class TaskService {
     public List<TaskEntity> findByCategory(TaskCategory category) {
         return repository.findByCategory(category);
     }
+
+    public List<TaskEntity> findByTitleContainingOrderByDueDateAsc(String keyword) {
+        return repository.findByTitleContainingOrderByDueDateAsc(keyword);
+    }
 }
