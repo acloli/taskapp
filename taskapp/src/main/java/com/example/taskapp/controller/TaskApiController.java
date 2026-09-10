@@ -2,6 +2,7 @@ package com.example.taskapp.controller;
 
 import com.example.taskapp.dto.TaskRequest;
 import com.example.taskapp.dto.TaskResponse;
+import com.example.taskapp.entity.TaskEntity;
 import com.example.taskapp.service.TaskService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -80,5 +85,11 @@ public class TaskApiController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build(); // 204
+    }
+
+    @PatchMapping("/{id}")
+    public TaskResponse update(@PathVariable Long id, @Valid @RequestBody TaskEntity task) {
+        return TaskResponse
+                .from(service.update(id, task.getTitle(), task.getDueDate(), task.getCategory(), task.isDone()));
     }
 }

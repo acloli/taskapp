@@ -100,4 +100,25 @@ public class TaskService {
         result.put("completionRate", completionRate);
         return result;
     }
+
+    @Transactional
+    public TaskEntity update(Long id, String title, LocalDate dueDate, TaskCategory category, Boolean done) {
+        TaskEntity task = getById(id);
+        if (title != null && !title.isBlank()) {
+            task.setTitle(title.trim());
+        }
+        if (dueDate != null) {
+            if (dueDate.isBefore(LocalDate.now())) {
+                throw new BusinessRuleViolationException("期限に過去の日付は指定できません");
+            }
+            task.setDueDate(dueDate);
+        }
+        if (category != null) {
+            task.setCategory(category);
+        }
+        if (done != null) {
+            task.setDone(done);
+        }
+        return task;
+    }
 }
