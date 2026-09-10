@@ -117,4 +117,21 @@ class TaskApiControllerTest {
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$[0].title").value("レビュー:設計書"));
         }
+
+        @Test
+        @DisplayName("正しい内容で更新すると200と更新後データが返る")
+        void update() throws Exception {
+                TaskEntity updated = new TaskEntity("更新タイトル", LocalDate.of(2027, 1, 1), TaskCategory.WORK);
+                updated.setDone(true);
+                when(service.update(anyLong(), any(), any(), any(), any())).thenReturn(updated);
+
+                mockMvc.perform(put("/api/v1/tasks/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                                    {"title":"更新タイトル","dueDate":"2027-01-01","category":"WORK","done":true}
+                                                """))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.title").value("更新タイトル"))
+                                .andExpect(jsonPath("$.done").value(true));
+        }
 }
