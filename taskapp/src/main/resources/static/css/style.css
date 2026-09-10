@@ -75,3 +75,32 @@ button.danger { background: #c53030; }
     font-size: 14px;
     color: #c53030;
 }
+
+.statistics {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0 16px;
+    padding-left: 16px;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.stats-item {
+    flex: 1;
+    text-align: center;
+}
+
+.stats-label {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+    margin: 4px;
+}
+
+.stats-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1e293b;
+    margin: 0;
+}

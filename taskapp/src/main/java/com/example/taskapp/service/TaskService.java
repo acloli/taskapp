@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -83,5 +85,19 @@ public class TaskService {
 
     public List<TaskEntity> findByTitleContainingOrderByDueDateAsc(String keyword) {
         return repository.findByTitleContainingOrderByDueDateAsc(keyword);
+    }
+
+    public Map<String, Object> getStatistics() {
+        List<TaskEntity> all = repository.findAll();
+        long done = all.stream().filter(task -> task.isDone()).count();
+        long todo = all.size() - done;
+        double completionRate = all.isEmpty() ? 0 : Math.round(((double) done * 100) / all.size() * 10) / 10.0;
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("all", all.size());
+        result.put("done", done);
+        result.put("todo", todo);
+        result.put("completionRate", completionRate);
+        return result;
     }
 }

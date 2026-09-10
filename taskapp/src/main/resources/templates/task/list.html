@@ -9,6 +9,26 @@
 <div class="container">
     <h1>タスク管理</h1>
 
+    <!-- 統計情報 -->
+    <div class="statistics" th:if="${stats}">
+        <div class="stats-item">
+            <p class="stats-label">総タスク数</p>
+            <p class="stats-value" th:text="${stats.all}">0</p>
+        </div>
+        <div class="stats-item">
+            <p class="stats-label">未完了</p>
+            <p class="stats-value" th:text="${stats.todo}">0</p>
+        </div>
+        <div class="stats-item">
+            <p class="stats-label">完了</p>
+            <p class="stats-value" th:text="${stats.done}">0</p>
+        </div>
+        <div class="stats-item">
+            <p class="stats-label">完了率</p>
+            <p class="stats-value" th:text="${stats.completionRate} + '%'">0%</p>
+        </div>
+    </div>
+
     <!-- 完了メッセージ -->
     <p class="message" th:if="${message}" th:text="${message}"></p>
 
