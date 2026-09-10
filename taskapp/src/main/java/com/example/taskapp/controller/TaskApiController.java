@@ -87,7 +87,7 @@ public class TaskApiController {
         return ResponseEntity.noContent().build(); // 204
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public TaskResponse update(@PathVariable Long id, @Valid @RequestBody TaskEntity task) {
         return TaskResponse
                 .from(service.update(id, task.getTitle(), task.getDueDate(), task.getCategory(), task.isDone()));
