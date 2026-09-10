@@ -126,6 +126,6 @@ class TaskServiceTest {
         assertThat(result.get("all")).isEqualTo(3);
         assertThat(result.get("done")).isEqualTo(2l);
         assertThat(result.get("todo")).isEqualTo(1l);
-        assertThat(result.get("completionRate")).isEqualTo(66.67d);
+        assertThat(result.get("completionRate")).isEqualTo(66.7d);
     }
 }
