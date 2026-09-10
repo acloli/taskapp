@@ -21,4 +21,6 @@ public interface TaskJpaRepository extends JpaRepository<TaskEntity, Long> {
     List<TaskEntity> findAllByOrderByDueDateAsc();
 
     List<TaskEntity> findByCategory(TaskCategory category);
+
+    List<TaskEntity> findByTitleContainingOrderByDueDateAsc(String keyword);
 }

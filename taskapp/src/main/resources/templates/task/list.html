@@ -17,6 +17,11 @@
         <a th:href="@{/tasks}">すべて</a>
         <a th:href="@{/tasks(filter='todo')}">未完了</a>
         <a th:href="@{/tasks(filter='done')}">完了</a>
+        <form th:action="@{/tasks}" method="get" class="search-form">
+            <input type="text" name="keyword" placeholder="検索" th:value="${keyword}">
+            <button type="submit">検索</button>
+            <a th:href="@{/tasks}">クリア</a>
+        </form>
     </div>
 
     <!-- 一覧 -->
