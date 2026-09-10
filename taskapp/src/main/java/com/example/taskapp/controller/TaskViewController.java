@@ -37,6 +37,7 @@ public class TaskViewController {
             });
         }
         model.addAttribute("filter", filter);
+        model.addAttribute("keyword", keyword);
         if (!model.containsAttribute("taskForm")) {
             model.addAttribute("taskForm", new TaskForm());
         }
