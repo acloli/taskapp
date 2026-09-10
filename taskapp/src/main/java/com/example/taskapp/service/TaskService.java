@@ -91,7 +91,7 @@ public class TaskService {
         List<TaskEntity> all = repository.findAll();
         long done = all.stream().filter(task -> task.isDone()).count();
         long todo = all.size() - done;
-        double completionRate = all.isEmpty() ? 0 : Math.round(((double) done * 100) / all.size() * 100) / 100.0;
+        double completionRate = all.isEmpty() ? 0 : Math.round(((double) done * 100) / all.size() * 10) / 10.0;
 
         Map<String, Object> result = new HashMap<>();
         result.put("all", all.size());
