@@ -104,4 +104,17 @@ class TaskApiControllerTest {
                 mockMvc.perform(delete("/api/v1/tasks/1"))
                                 .andExpect(status().isNoContent()); // 204
         }
+
+        @Test
+        @DisplayName("検索: タイトルにキーワードが含まれていれば 200 で返る")
+        void search() throws Exception {
+                // 検索条件に一致するダミーデータを用意
+                TaskEntity found = new TaskEntity("レビュー:設計書", LocalDate.of(2026, 12, 31), TaskCategory.WORK);
+                when(service.findByTitleContainingOrderByDueDateAsc(any()))
+                                .thenReturn(List.of(found));
+
+                mockMvc.perform(get("/api/v1/tasks?keyword=レビュー"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$[0].title").value("レビュー:設計書"));
+        }
 }
