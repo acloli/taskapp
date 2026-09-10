@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -103,5 +104,28 @@ class TaskServiceTest {
 
         assertThat(result).hasSize(1);
         verify(repository).findAllByOrderByDueDateAsc();
+    }
+
+    @Test
+    @DisplayName("統計情報を正しく計算する")
+    void getStatistics() {
+        List<TaskEntity> tasks = List.of(
+                new TaskEntity("タスク1", LocalDate.now(), TaskCategory.WORK),
+                new TaskEntity("タスク2", LocalDate.now(), TaskCategory.WORK),
+                new TaskEntity("タスク3", LocalDate.now(), TaskCategory.WORK));
+        for (int i = 0; i < tasks.size() - 1; i++) {
+            tasks.get(i).setDone(true);
+        }
+
+        when(repository.findAll()).thenReturn(tasks);
+
+        // Act
+        Map<String, Object> result = service.getStatistics();
+
+        // Assert
+        assertThat(result.get("all")).isEqualTo(3);
+        assertThat(result.get("done")).isEqualTo(2l);
+        assertThat(result.get("todo")).isEqualTo(1l);
+        assertThat(result.get("completionRate")).isEqualTo(66.67d);
     }
 }
